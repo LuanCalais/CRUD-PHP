@@ -39,7 +39,7 @@ if(isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != ""){
                 $email = null;
                 $celular = null;
             }else{
-                echo 'Erro na tentativa de cadastro';
+                echo 'Erro na tentativa de operação';
             }
         }else{
             throw new PDOException("Erro: Não foi possível executar a declaração sql");
@@ -66,6 +66,29 @@ if(isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $id != ""){
             $nome = $rs->nome;
             $email = $rs->email;
             $celular = $rs->celular;
+        }else{
+            throw new PDOException("Erro: Não foi possível executar a declaração sql");
+        }
+
+    }catch(PDOException $err){
+        echo "Erro: " . $err->getMessage();
+    }
+}
+
+// Executa Delete
+// Verfica a ação do formulario, e se o id não está vazio, e nos retorna um objeto referente ao id(Primary Key)
+if(isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != ""){
+    try{
+        $stmt = $conexao->prepare("DELETE FROM contatos WHERE id = ?");
+
+        $stmt->bindParam(1, $id, PDO::PARAM_INT);
+        if($stmt->execute()){
+            if($stmt->rowCount() > 0){
+                echo '<div class="badge bg-danger m-3">Informação deletada do Banco de Dados </div>';
+                $id = null;
+            }else{
+                echo 'Erro na tentativa de operação';
+            }
         }else{
             throw new PDOException("Erro: Não foi possível executar a declaração sql");
         }
