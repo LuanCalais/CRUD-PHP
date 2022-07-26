@@ -1,6 +1,9 @@
-<?php  include('model/contatos.php') //Criado antes para que possamos setar as variáveis ?> 
-<?php include('service/conctaPDO.php') //Efetua conexão ?>
-<?php include('model/contatosDAO.php')  //Efetua operações no banco de dados?>
+<?php include('model/contatos.php') //Criado antes para que possamos setar as variáveis 
+?>
+<?php include('service/conctaPDO.php') //Efetua conexão 
+?>
+<?php include('model/contatosDAO.php')  //Efetua operações no banco de dados
+?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -36,7 +39,7 @@
                                             //Preenche o nome no campo nome com o valor "value se ele existir"
                                             if (isset($nome) && $nome != null || $nome != "") {
                                                 echo "value=\"{$nome}\"";
-                                            } 
+                                            }
                                             ?> />
             E-mail:
             <input type="text" name="email" <?php
@@ -56,6 +59,46 @@
             <input type="submit" class="btn btn-primary" value="Salvar">
             <input type="reset" class="btn btn-dark" value="Novo">
         </form>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Celular</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Etapa que executa o Read() trazendo as informações do banco gerando a tabela -->
+                <?php
+                try {
+                    $stmt = $conexao->prepare("SELECT * FROM contatos");
+
+                    if ($stmt->execute()) {
+
+                        // $rs - Result Set: recebe cada interação do loop como objeto de registro
+                        // fetch() - Busca o resultado que obtemos pelo execute()
+                        // PDO::FETCH_OBJ - Indica ao método que queremos os registro como objetos
+                        // While abaixo indica que enquanto for possível iterar no $rs será true
+                        while ($rs = $stmt->fetch(PDO::FETCH_OBJ)) {
+                            echo "<tr>";
+                            echo "<td>" . $rs->nome . "</td><td>" . $rs->email . "</td><td>" . $rs->celular . "</td><td><a class='btn btn-secondary' href=\"\">Alterar</a>"
+                                . "<a class='btn btn-danger mx-1' href=\"\">Excluir</a>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "Erro: Não foi possível recuperar os dados do banco de dados";
+                    }
+                } catch (PDOException $err) {
+                    echo "Erro: " . $err->getMessage();
+                }
+
+
+                ?>
+
+            </tbody>
+        </table>
 
         <!-- <script src="main.js"></script> -->
     </div>

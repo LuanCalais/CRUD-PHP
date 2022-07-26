@@ -17,7 +17,7 @@ if(isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != ""){
 
             // Retorna o número de linhas afetadas na tabela(disponível após o execute)
             if($stmt->rowCount() > 0){
-                echo 'Dados cadastrados com sucesso';
+                echo '<div class="badge bg-success m-3">Dados cadastrados com sucesso </div>';
 
                 // Zera os valores
                 $id = null;
