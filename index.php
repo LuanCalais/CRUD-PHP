@@ -27,7 +27,6 @@
             <hr>
 
             <input type="hidden" name="id" <?php
-                                            $id = 1;
                                             // Preenche o id no campo id com um valor "value" se ele existir
                                             if (isset($id) && $id != null || $id != "") {
                                                 echo "value=\"{$id}\"";
@@ -83,8 +82,8 @@
                         // While abaixo indica que enquanto for possível iterar no $rs será true
                         while ($rs = $stmt->fetch(PDO::FETCH_OBJ)) {
                             echo "<tr>";
-                            echo "<td>" . $rs->nome . "</td><td>" . $rs->email . "</td><td>" . $rs->celular . "</td><td><a class='btn btn-secondary' href=\"\">Alterar</a>"
-                                . "<a class='btn btn-danger mx-1' href=\"\">Excluir</a>";
+                            echo "<td>" . $rs->nome . "</td><td>" . $rs->email . "</td><td>" . $rs->celular . "</td><td><a class='btn btn-secondary' href=\"?act=upd&id=". $rs->id . "\">Alterar</a>"
+                                . "<a class='btn btn-danger mx-1' href=\"?act=del&id=" . $rs->id . "\">Excluir</a>";
                             echo "</tr>";
                         }
                     } else {
